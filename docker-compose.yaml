@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  database:
+    image: postgres:11-alpine
+    ports:
+      - "5432:5432"
+    container_name: postgres
+    environment:
+      POSTGRES_PASSWORD: "12345678"
+      POSTGRES_USER: "postgres"
+      POSTGRES_DB: "USER_MANAGEMENT"
+      LC_ALL: en_US.UTF-8
+    volumes:
+      # - ./db_script.sql:/docker-entrypoint-initdb.d/init.sql
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - docker_network
+  app:
+    image: app
+    build: .
+    environment:
+      POSTGRES_HOST: "postgres"
+      POSTGRES_PASSWORD: "12345678"
+      POSTGRES_USER: "postgres"
+      POSTGRES_DB: "USER_MANAGEMENT"
+      POSTGRES_PORT: "5432"
+      APP_PORT: "5000"
+      FLASK_APP : "./src/__init__.py"
+    depends_on:
+      - database
+    ports:
+      - "5000:5000"
+    volumes:
+      - static:/app/src/templates
+    networks:
+      - docker_network
+
+volumes:
+  pg_data:
+    driver: local
+  static:
+    driver: local  
+
+networks:
+  docker_network:
+    driver: bridge

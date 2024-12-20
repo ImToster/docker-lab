@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card shadow">
+    <div class="card-body">
+        <form action="/new" method="POST">
+            <div class="row mb-3">
+                <div class="col">
+                    <label>Username</label>
+                    <input type="text" class="form-control mb-3" name="username">
+                </div>
+                <div class="col">
+                    <label>Name</label>
+                    <input type="text" class="form-control mb-3" name="name">
+                </div>
+                <div class="col">
+                    <label>Password</label>
+                    <input type="text" class="form-control mb-3" name="password">
+                </div>
+                <div class="col">
+                    <button class="btn btn-primary mb-3 mt-4" type="submit">Save</button>
+                </div>
+            </div>
+        </form>
+
+
+        <!-- Tabla -->
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">id</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Password</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+        
+        <tbody>
+            {% for d in data %}
+                <tr>
+                    <td>{{d.id}}</td>
+                    <td>{{d.username}}</td>
+                    <td>{{d.name}}</td>
+                    <td>{{d.password}}</td>
+                    <td><a href="{{url_for('routes.edit_user', id=d.id)}}" class="btn btn-primary btn-sm" id="btn-edit{{d.id}}">Edit</a></td>
+                    <td><a href="{{url_for('routes.delete_user', id=d.id)}}" class="btn btn-danger btn-sm">Delete</a></td>
+                </tr>
+
+
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+
+    </div>
+</div>
+{% endblock %}
